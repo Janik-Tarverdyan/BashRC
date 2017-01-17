@@ -1,2 +1,2 @@
 # BashRC
-With PowerLine
+With in PowerLine
