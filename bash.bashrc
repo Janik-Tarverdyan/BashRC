@@ -78,7 +78,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -108,27 +108,28 @@ xterm*|rxvt*)
 esac
 
 # enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
+#if [ -x /usr/bin/dircolors ]; then
+    #test -r ~/.dircolors & eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    #alias ls='ls --color=auto'
+    ##alias dir='dir --color=auto'
+    ##alias vdir='vdir --color=auto'
 
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
+    #alias 'grep'='grep --color=auto'
+    #alias 'fgrep'='fgrep --color=auto'
+#fi
 
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 export PATH="$PATH:$HOME/.gem/ruby/2.3.0/bin/"
+export PATH="$PATH:$HOME/.tmux/bin/"
 
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ll'
 alias open='xdg-open '
+#alias cat='pygmentize '
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -140,7 +141,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
 if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+    command source ~/.bash_aliases
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -148,9 +149,9 @@ fi
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
   if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
+    command source /usr/share/bash-completion/bash_completion
   elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+    command source /etc/bash_completion
   fi
 fi
 
@@ -166,16 +167,6 @@ fi
 # Source global definitions (Aliases session_start) #
 #----------------------------------------------------
 
-alias ..='cd ..'
-# Redirect
-alias Projects='cd ~/.Projects/'
-alias Project-Gretong='cd ~/.Projects/Layouts/Gretong/'
-alias LocalServer='cd /srv/http/'
-alias host-php='cd /srv/http/PHP/'
-alias host-python='cd /srv/http/Python/'
-alias rsgalaxy.local='cd /srv/http/PHP/Framework/Symfont/rsgalaxy.local/'
-alias ausgang_bayern.local='cd /srv/http/PHP/Framework/Yii/ausgang_bayern.local/'
-
 # System
 alias 'update'='sudo pacman -Syu'
 alias 'install'='sudo pacman -S '
@@ -187,6 +178,7 @@ alias 'mkdir'='mkdir -v'
 alias 'rmdir'='rmdir -v'
 alias 'chown'='chown -v'
 alias 'chmod'='chmod -v'
+alias rm='rm -vi'
 alias edit='vim '
 
 
@@ -195,9 +187,6 @@ alias 'mysql-start'='mysql -uroot -p'
 
 # Python
 #alias python='bpython'
-
-# Projects
-alias 'crm.bt'='cd /srv/http/PHP/crm/'
 
 
 # WP-CLI
@@ -268,7 +257,7 @@ function get_xserver ()
     esac
 }
 
-if [ -z ${DISPLAY:=""} ]; then
+if [ -z "${DISPLAY:=""}" ]; then
     get_xserver
     if [[ -z ${XSERVER}  || ${XSERVER} == $(hostname) ||
        ${XSERVER} == "unix" ]]; then
@@ -321,34 +310,34 @@ unset MAILCHECK        # Don't want my shell to warn me of incoming mail.
 
 
 # Normal Colors
-Black='\e[0;30m'        # Black
+#Black='\e[0;30m'        # Black
 Red='\e[0;31m'          # Red
 Green='\e[0;32m'        # Green
-Yellow='\e[0;33m'       # Yellow
-Blue='\e[0;34m'         # Blue
-Purple='\e[0;35m'       # Purple
+#Yellow='\e[0;33m'       # Yellow
+#Blue='\e[0;34m'         # Blue
+#Purple='\e[0;35m'       # Purple
 Cyan='\e[0;36m'         # Cyan
-White='\e[0;37m'        # White
+#White='\e[0;37m'        # White
 
 # Bold
-BBlack='\e[1;30m'       # Black
+#BBlack='\e[1;30m'       # Black
 BRed='\e[1;31m'         # Red
-BGreen='\e[1;32m'       # Green
-BYellow='\e[1;33m'      # Yellow
-BBlue='\e[1;34m'        # Blue
-BPurple='\e[1;35m'      # Purple
+#BGreen='\e[1;32m'       # Green
+#BYellow='\e[1;33m'      # Yellow
+#BBlue='\e[1;34m'        # Blue
+#BPurple='\e[1;35m'      # Purple
 BCyan='\e[1;36m'        # Cyan
 BWhite='\e[1;37m'       # White
 
 # Background
-On_Black='\e[40m'       # Black
+#On_Black='\e[40m'       # Black
 On_Red='\e[41m'         # Red
-On_Green='\e[42m'       # Green
-On_Yellow='\e[43m'      # Yellow
-On_Blue='\e[44m'        # Blue
-On_Purple='\e[45m'      # Purple
-On_Cyan='\e[46m'        # Cyan
-On_White='\e[47m'       # White
+#On_Green='\e[42m'       # Green
+#On_Yellow='\e[43m'      # Yellow
+#On_Blue='\e[44m'        # Blue
+#On_Purple='\e[45m'      # Purple
+#On_Cyan='\e[46m'        # Cyan
+#On_White='\e[47m'       # White
 
 NC="\e[m"               # Color Reset
 
@@ -427,14 +416,14 @@ fi
 
 
 NCPU=$(grep -c 'processor' /proc/cpuinfo)    # Number of CPUs
-SLOAD=$(( 100*${NCPU} ))        # Small load
-MLOAD=$(( 200*${NCPU} ))        # Medium load
-XLOAD=$(( 400*${NCPU} ))        # Xlarge load
+SLOAD=$(( 100*"${NCPU}" ))        # Small load
+MLOAD=$(( 200*"${NCPU}" ))        # Medium load
+XLOAD=$(( 400*"${NCPU}" ))        # Xlarge load
 
 # Returns system load as percentage, i.e., '40' rather than '0.40)'.
 function load()
 {
-    local SYSLOAD=$(cut -d " " -f1 /proc/loadavg | tr -d '.')
+    command local SYSLOAD="$(cut -d ' ' -f1 /proc/loadavg | tr -d '.')"
     # System load of the current host.
     echo $((10#$SYSLOAD))       # Convert to decimal.
 }
@@ -442,15 +431,15 @@ function load()
 # Returns a color indicating system load.
 function load_color()
 {
-    local SYSLOAD=$(load)
-    if [ ${SYSLOAD} -gt ${XLOAD} ]; then
-        echo -en ${ALERT}
-    elif [ ${SYSLOAD} -gt ${MLOAD} ]; then
-        echo -en ${Red}
-    elif [ ${SYSLOAD} -gt ${SLOAD} ]; then
-        echo -en ${BRed}
+    command local SYSLOAD="$(load)"
+    if [ "${SYSLOAD}" -gt "${XLOAD}" ]; then
+        echo -en "${ALERT}"
+    elif [ "${SYSLOAD}" -gt "${MLOAD}" ]; then
+        echo -en "${Red}"
+    elif [ "${SYSLOAD}" -gt "${SLOAD}" ]; then
+        echo -en "${BRed}"
     else
-        echo -en ${Green}
+        echo -en "${Green}"
     fi
 }
 
@@ -458,7 +447,7 @@ function load_color()
 function disk_color()
 {
     if [ ! -w "${PWD}" ] ; then
-        echo -en ${Red}
+        echo -en "${Red}"
         # No 'write' privilege in the current directory.
     elif [ -s "${PWD}" ] ; then
         local used=$(command df -P "$PWD" |
@@ -1085,7 +1074,7 @@ _make()
 
     COMPREPLY=( $( awk -F':' '/^[a-zA-Z0-9][^$#\/\t=]*:([^=]|$)/ \
                                {split($1,A,/ /);for(i in A)print A[i]}' \
-                                $makef 2>/dev/null | eval $gcmd  ))
+                                "$makef" 2>/dev/null | eval $gcmd  ))
 
 }
 
@@ -1162,10 +1151,9 @@ complete -F _killall killall killps
 #fi
 
 function _update_ps1() {
-    PS1="$( /home/janik/.powerline-shell/powerline-shell.py $? 2> /dev/null) \n↦ "
+    PS1="$( /etc/.powerline-shell/powerline-shell.py $? 2> /dev/null) \n↦ "
 }
 
 if [ "$TERM" != "linux" ]; then
     PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
-Gjjjjjjkkkk
