@@ -1129,3 +1129,11 @@ function _update_ps1() {
 if [ "$TERM" != "linux" ]; then
     PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
+
+
+if [ "$PWD" == "$HOME" ]; then
+  command source ~/.bash_aliases
+else
+  command source "$(find . -name activate -print -quit | grep activate | head -1)"
+fi
+
