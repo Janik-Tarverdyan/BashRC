@@ -108,18 +108,18 @@ xterm*|rxvt*)
 esac
 
 # enable color support of ls and also add handy aliases
-#if [ -x /usr/bin/dircolors ]; then
-    #test -r ~/.dircolors & eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    #alias ls='ls --color=auto'
-    ##alias dir='dir --color=auto'
-    ##alias vdir='vdir --color=auto'
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors & eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
 
-    #alias 'grep'='grep --color=auto'
-    #alias 'fgrep'='fgrep --color=auto'
-#fi
+    alias 'grep'='grep --color=auto'
+    alias 'fgrep'='fgrep --color=auto'
+fi
 
 # colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 export PATH="$PATH:$HOME/.gem/ruby/2.3.0/bin/"
 export PATH="$PATH:$HOME/.tmux/bin/"
@@ -925,7 +925,7 @@ COMP_WORDBREAKS=${COMP_WORDBREAKS/=/}
 _get_longopts()
 {
   #$1 --help | sed  -e '/--/!d' -e 's/.*--\([^[:space:].,]*\).*/--\1/'| \
-  #grep ^"$2" |sort -u ;
+  grep ^"$2" |sort -u ;
     $1 --help | grep -o -e "--[^[:space:].,]*" | grep -e "$2" |sort -u
 }
 
