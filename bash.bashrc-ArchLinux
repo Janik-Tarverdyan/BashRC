@@ -643,12 +643,15 @@ function soffice() { command soffice "$@" & }
 function firefox() { command firefox "$@" & }
 function xpdf() { command xpdf "$@" & }
 
+
 VirtualENV(){
   if [ $PWD != $HOME ]; then
-    source $(find $PWD -name activate)
+    command source $(find $PWD -name activate)
   fi
 }
-VirtualENV
+if [ -e "$(find $PWD -name activate)" ]; then
+  VirtualENV
+fi
 
 
 #-------------------------------------------------------------
