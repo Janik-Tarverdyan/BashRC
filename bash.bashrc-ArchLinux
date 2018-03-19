@@ -110,7 +110,6 @@ esac
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors & eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
@@ -173,7 +172,7 @@ alias 'install'='sudo pacman -S '
 alias 'autoremove'='sudo pacman -Rns $(pacman -Qqtd)'
 alias 'VGA-info'='lspci |grep -i VGA'
 alias 'root'='sudo -i'
-alias ls='ls -FC'
+alias ls='ls --group-directories-first -FC'
 alias 'mkdir'='mkdir -v'
 alias 'rmdir'='rmdir -v'
 alias 'chown'='chown -v'
@@ -548,7 +547,7 @@ alias df='df -kTh'
 # The 'ls' family (this assumes you use a recent GNU ls).
 #-------------------------------------------------------------
 # Add colors for filetype and  human-readable sizes by default on 'ls':
-alias ls='ls -FC -h --color'
+alias ls='ls --group-directories-first -FC -h --color'
 alias lx='ls -lXB'         #  Sort by extension.
 alias lk='ls -lSr'         #  Sort by size, biggest last.
 alias lt='ls -ltr'         #  Sort by date, most recent last.
