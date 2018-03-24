@@ -127,7 +127,6 @@ export PATH="$PATH:$PWD/vendor/bin/"
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
-alias l='ll'
 alias open='xdg-open '
 #alias cat='pygmentize '
 
@@ -173,7 +172,6 @@ alias 'install'='sudo pacman -S '
 alias 'autoremove'='sudo pacman -Rns $(pacman -Qqtd)'
 alias 'VGA-info'='lspci |grep -i VGA'
 alias 'root'='sudo -i'
-alias ls='ls --group-directories-first -FC'
 alias 'mkdir'='mkdir -v'
 alias 'rmdir'='rmdir -v'
 alias 'chown'='chown -v'
@@ -550,6 +548,7 @@ alias df='df -kTh'
 # Add colors for filetype and  human-readable sizes by default on 'ls':
 alias ls='ls --group-directories-first -FC -h --color'
 alias lx='ls -lXB'         #  Sort by extension.
+alias l='ls'
 alias lk='ls -lSr'         #  Sort by size, biggest last.
 alias lt='ls -ltr'         #  Sort by date, most recent last.
 alias lc='ls -ltcr'        #  Sort by/show change time,most recent last.
