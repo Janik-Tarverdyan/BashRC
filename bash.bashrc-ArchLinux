@@ -642,12 +642,28 @@ function soffice() { command soffice "$@" & }
 function firefox() { command firefox "$@" & }
 function xpdf() { command xpdf "$@" & }
 
+
+
+#-------------------------------------------------------------
+# Python functions:
+#-------------------------------------------------------------
 VirtualENV(){
   if [ $PWD != $HOME ] && [ -e "$(find $PWD -name activate)" ]; then
     command source $(find $PWD -name activate)
   fi
 }
 VirtualENV
+
+
+# pip bash completion start
+_pip_completion()
+{
+    COMPREPLY=( $( COMP_WORDS="${COMP_WORDS[*]}" \
+                   COMP_CWORD=$COMP_CWORD \
+                   PIP_AUTO_COMPLETE=1 $1 ) )
+}
+complete -o default -F _pip_completion pip
+# pip bash completion end
 
 
 #-------------------------------------------------------------
@@ -1120,7 +1136,7 @@ complete -F _killall killall killps
 # End:
 #
 ## Path to the bash it configuration
-#export BASH_IT="/home/Jack/.bash_it"
+#export BASH_IT="/home/$HOME/.bash_it"
 #
 ## Lock and Load a custom theme file
 ## location /.bash_it/themes/
@@ -1148,7 +1164,7 @@ complete -F _killall killall killps
 ## Load Bash It
 #source $BASH_IT/bash_it.sh
 #
-#export NVM_DIR="/home/Jack/.nvm"
+#export NVM_DIR="/home/$HOME/.nvm"
 #[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 #
 ## PowerLine configure
