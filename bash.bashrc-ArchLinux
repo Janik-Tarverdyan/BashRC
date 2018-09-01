@@ -123,10 +123,11 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export PATH="$PATH:$HOME/.gem/ruby/2.3.0/bin/"
 export PATH="$PATH:$HOME/.tmux/bin/"
 export PATH="$PATH:$PWD/vendor/bin/"
+export PATH="$PATH:$PWD/bin/"
 
 # some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
+#alias ll='ls -alF'
+#alias la='ls -A'
 alias open='xdg-open '
 #alias cat='pygmentize '
 
@@ -546,9 +547,9 @@ alias df='df -kTh'
 # The 'ls' family (this assumes you use a recent GNU ls).
 #-------------------------------------------------------------
 # Add colors for filetype and  human-readable sizes by default on 'ls':
-alias ls='ls --group-directories-first -FC -h --color'
+alias l='ls --group-directories-first -h --color -FC'
+alias ls='ls -h --color -FC --group-directories-first'
 alias lx='ls -lXB'         #  Sort by extension.
-alias l='ls'
 alias lk='ls -lSr'         #  Sort by size, biggest last.
 alias lt='ls -ltr'         #  Sort by date, most recent last.
 alias lc='ls -ltcr'        #  Sort by/show change time,most recent last.
