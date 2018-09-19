@@ -1123,7 +1123,7 @@ complete -F _killall killall killps
 #fi
 
 function _update_ps1() {
-    PS1="$( /home/janik/.powerline-shell/powerline-shell.py $? 2> /dev/null) \n↦ "
+    PS1="$( /etc/.powerline-shell/powerline-shell.py $? 2> /dev/null) \n↦ "
 }
 
 if [ "$TERM" != "linux" ]; then
