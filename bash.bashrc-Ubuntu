@@ -125,9 +125,9 @@ export PATH="$PATH:$HOME/.gem/ruby/2.3.0/bin/"
 export PATH="$PATH:$HOME/.tmux/bin/"
 
 # some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ll'
+#alias ll='ls -alFC --group-directories-first'
+#alias la='ls -A --group-directories-first'
+#alias l='ls --group-directories-first -FC'
 alias open='xdg-open '
 #alias cat='pygmentize '
 
@@ -417,9 +417,9 @@ fi
 
 
 NCPU=$(grep -c 'processor' /proc/cpuinfo)    # Number of CPUs
-SLOAD=$(( 100*"${NCPU}" ))        # Small load
-MLOAD=$(( 200*"${NCPU}" ))        # Medium load
-XLOAD=$(( 400*"${NCPU}" ))        # Xlarge load
+#SLOAD=$(( 100*"${NCPU}" ))        # Small load
+#MLOAD=$(( 200*"${NCPU}" ))        # Medium load
+#XLOAD=$(( 400*"${NCPU}" ))        # Xlarge load
 
 # Returns system load as percentage, i.e., '40' rather than '0.40)'.
 function load()
@@ -556,7 +556,8 @@ alias lc='ls -ltcr'        #  Sort by/show change time,most recent last.
 alias lu='ls -ltur'        #  Sort by/show access time,most recent last.
 
 # The ubiquitous 'll': directories first, with alphanumeric sorting:
-alias ll="ls -lv --group-directories-first"
+alias l="ls --group-directories-first --color -l -FC"
+alias ll='l -l'
 alias lm='ll |more'        #  Pipe through 'more'
 alias lr='ll -R'           #  Recursive ls.
 alias la='ll -A'           #  Show hidden files.
