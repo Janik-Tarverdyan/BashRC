@@ -226,6 +226,9 @@ alias wp-transient='wp transient'           # Manage transients.
 alias wp-user='wp user'                     # Manage users.
 alias wp-widget='wp widget'                 # Manage sidebar widgets.
 
+# wget
+alias clone-site='wget --mirror --convert-links --adjust-extension --page-requisites '
+
 
 #----------------------------------------------------
 # Source global definitions (Aliases session_end)   #
