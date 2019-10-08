@@ -183,7 +183,8 @@ alias clone-site='wget --mirror --convert-links --adjust-extension --page-requis
 
 
 # MySQL Service
-alias 'mysql-start'='mysql -uroot -p'
+alias mysql='mycli'
+alias 'mysql-start'='mysql -hlocalhost -uroot'
 
 # Python
 #alias python='bpython'
@@ -1179,7 +1180,7 @@ complete -F _killall killall killps
 # End:
 #
 # Path to the bash it configuration
-export BASH_IT="/etc/BashRC/.bash_it"
+#export BASH_IT="/etc/BashRC/.bash_it"
 
 # Lock and Load a custom theme file
 # location /.bash_it/themes/
@@ -1188,7 +1189,7 @@ export BASH_IT="/etc/BashRC/.bash_it"
 #export BASH_IT_THEME='atomic'
 #export BASH_IT_THEME='metal'
 #export BASH_IT_THEME='bobby-python'
-export BASH_IT_THEME='cupcake'
+#export BASH_IT_THEME='cupcake'
 #export BASH_IT_THEME='hawaii50'
 #export BASH_IT_THEME='n0qorg'
 #export BASH_IT_THEME='parrot'
@@ -1199,23 +1200,23 @@ export BASH_IT_THEME='cupcake'
 #export GIT_HOSTING='git@git.domain.com'
 
 # Don't check mail when opening terminal.
-unset MAILCHECK
+#unset MAILCHECK
 
-# Change this to your console based IRC client of choice.
-export IRC_CLIENT='irssi'
+## Change this to your console based IRC client of choice.
+#export IRC_CLIENT='irssi'
 
-# Set this to the command you use for todo.txt-cli
-export TODO="t"
+## Set this to the command you use for todo.txt-cli
+#export TODO="t"
 
-# Set this to false to turn off version control status checking within the prompt for all themes
-export SCM_CHECK=true
+## Set this to false to turn off version control status checking within the prompt for all themes
+#export SCM_CHECK=true
 
-# Set vcprompt executable path for scm advance info in prompt (demula theme)
-# https://github.com/xvzf/vcprompt
-export VCPROMPT_EXECUTABLE=~/.vcprompt/bin/vcprompt
+## Set vcprompt executable path for scm advance info in prompt (demula theme)
+## https://github.com/xvzf/vcprompt
+#export VCPROMPT_EXECUTABLE=~/.vcprompt/bin/vcprompt
 
-# Load Bash It
-source $BASH_IT/bash_it.sh
+## Load Bash It
+#source $BASH_IT/bash_it.sh
 #
 #export NVM_DIR="/home/$HOME/.nvm"
 #[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -1226,10 +1227,10 @@ source $BASH_IT/bash_it.sh
 #    source ~/.local/lib/python2.7/site-packages/powerline/bindings/bash/powerline.sh
 #fi
 
-#function _update_ps1() {
-    #PS1="$( /etc/.powerline-shell/powerline-shell.py $? 2> /dev/null) \n↦ "
-#}
+function _update_ps1() {
+    PS1="$( /etc/.powerline-shell/powerline-shell.py $? 2> /dev/null) \n↦ "
+}
 
-#if [ "$TERM" != "linux" ]; then
-    #PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
-#fi
+if [ "$TERM" != "linux" ]; then
+    PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+fi
