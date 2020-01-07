@@ -78,7 +78,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-force_color_prompt=yes
+#force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -110,7 +110,6 @@ esac
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors & eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
 
@@ -121,13 +120,15 @@ fi
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-export PATH="$PATH:$HOME/.gem/ruby/2.3.0/bin/"
+export PATH="$PATH:$HOME/.gem/ruby/2.5.0/bin/"
 export PATH="$PATH:$HOME/.tmux/bin/"
+export PATH="$PATH:$PWD/vendor/bin/"
+export PATH="$PATH:$PWD/bin/"
+export PATH="$PATH:$(npm bin)"
 
 # some more ls aliases
-#alias ll='ls -alFC --group-directories-first'
-#alias la='ls -A --group-directories-first'
-#alias l='ls --group-directories-first -FC'
+#alias ll='ls -alF'
+#alias la='ls -A'
 alias open='xdg-open '
 #alias cat='pygmentize '
 
@@ -173,17 +174,18 @@ alias 'install'='sudo apt install '
 alias 'autoremove'='sudo apt autoremove'
 alias 'VGA-info'='lspci |grep -i VGA'
 alias 'root'='sudo -i'
-alias ls='ls -FC'
 alias 'mkdir'='mkdir -v'
 alias 'rmdir'='rmdir -v'
 alias 'chown'='chown -v'
 alias 'chmod'='chmod -v'
 alias rm='rm -vi'
 alias edit='vim '
+alias clone-site='wget --mirror --convert-links --adjust-extension --page-requisites '
 
 
 # MySQL Service
-alias 'mysql-start'='mysql -uroot -p'
+#alias mysql='mycli'
+alias 'mysql-start'='mysql -hlocalhost -uroot -p'
 
 # Python
 #alias python='bpython'
@@ -225,9 +227,6 @@ alias wp-theme='wp theme'                   # Manage themes.
 alias wp-transient='wp transient'           # Manage transients.
 alias wp-user='wp user'                     # Manage users.
 alias wp-widget='wp widget'                 # Manage sidebar widgets.
-
-# wget
-alias clone-site='wget --mirror --convert-links --adjust-extension --page-requisites '
 
 
 #----------------------------------------------------
@@ -314,7 +313,7 @@ unset MAILCHECK        # Don't want my shell to warn me of incoming mail.
 
 
 # Normal Colors
-#Black='\e[0;30m'        # Black
+Black='\e[0;30m'        # Black
 Red='\e[0;31m'          # Red
 Green='\e[0;32m'        # Green
 #Yellow='\e[0;33m'       # Yellow
@@ -347,7 +346,6 @@ NC="\e[m"               # Color Reset
 
 
 ALERT=${BWhite}${On_Red} # Bold White on red background
-
 
 
 echo -e "${BCyan}BASH Version ${BRed}${BASH_VERSION%.*} ${BCyan}\
@@ -419,10 +417,10 @@ fi
 
 
 
-NCPU=$(grep -c 'processor' /proc/cpuinfo)    # Number of CPUs
-#SLOAD=$(( 100*"${NCPU}" ))        # Small load
-#MLOAD=$(( 200*"${NCPU}" ))        # Medium load
-#XLOAD=$(( 400*"${NCPU}" ))        # Xlarge load
+# NCPU=$(grep -c 'processor' /proc/cpuinfo)    # Number of CPUs
+# SLOAD=$(( 100*"${NCPU}" ))        # Small load
+# MLOAD=$(( 200*"${NCPU}" ))        # Medium load
+# XLOAD=$(( 400*"${NCPU}" ))        # Xlarge load
 
 # Returns system load as percentage, i.e., '40' rather than '0.40)'.
 function load()
@@ -566,13 +564,14 @@ alias lr='ll -R'           #  Recursive ls.
 alias la='ls -all'         #  Show hidden files.
 alias tree='tree -Csuh'    #  Nice alternative to 'recursive ls' ...
 
+
 #-------------------------------------------------------------
 # Tailoring 'less'
 #-------------------------------------------------------------
 
 alias more='less'
 export PAGER=less
-export LESSCHARSET='latin1'
+export LESSCHARSET='utf8'
 export LESSOPEN='|/usr/bin/lesspipe.sh %s 2>&-'
                 # Use this if lesspipe.sh exists.
 export LESS='-i -N -w  -z-4 -g -M -X -R -P%t?f%f \
@@ -646,12 +645,70 @@ function soffice() { command soffice "$@" & }
 function firefox() { command firefox "$@" & }
 function xpdf() { command xpdf "$@" & }
 
-VirtualENV(){
-  if [ $PWD != $HOME ] && [ -e "$(find $PWD -name activate)" ]; then
-    command source $(find $PWD -name activate)
-  fi
+
+
+#-------------------------------------------------------------
+# Python functions:
+#-------------------------------------------------------------
+# Activate current folder's pipenv virtualenv
+# or accept an explicit virtualenv name
+workon() {
+    if [ $# -eq 0 ]
+    then
+        source "$(pipenv --venv)/bin/activate"
+    else
+        source "~/.virtualenvs/$1/bin/activate"
+    fi
 }
-VirtualENV
+
+# Making virtualenv alias
+mkvenv() {
+    cd ~/.virtualenvs
+    virtualenv "$@"
+    cd -
+    workon "$1"
+}
+
+# Automatic virtualenv sourcing
+function auto_pipenv_shell {
+    if [ ! -n "$VIRTUAL_ENV" ]; then
+        if [ -f "Pipfile" ] ; then
+            workon
+        fi
+    fi
+}
+function cd {
+    builtin cd "$@"
+    auto_pipenv_shell
+}
+auto_pipenv_shell
+
+
+#VirtualENV(){
+  #if [ $PWD != $HOME ] && [ -e "$(find $PWD -name activate)" ]; then
+    #command source $(find $PWD -name activate)
+  #fi
+#}
+#VirtualENV
+
+#Pipenv(){
+  #ENV_Path="$(pipenv --venv)"
+  #if [ -e $ENV_Path ];then
+    #command pipenv shell
+  #fi
+#}
+#Pipenv
+
+
+# pip bash completion start
+_pip_completion()
+{
+    COMPREPLY=( $( COMP_WORDS="${COMP_WORDS[*]}" \
+                   COMP_CWORD=$COMP_CWORD \
+                   PIP_AUTO_COMPLETE=1 $1 ) )
+}
+complete -o default -F _pip_completion pip
+# pip bash completion end
 
 
 #-------------------------------------------------------------
@@ -936,7 +993,7 @@ COMP_WORDBREAKS=${COMP_WORDBREAKS/=/}
 _get_longopts()
 {
   #$1 --help | sed  -e '/--/!d' -e 's/.*--\([^[:space:].,]*\).*/--\1/'| \
-  grep ^"$2" |sort -u ;
+  #grep ^"$2" |sort -u ;
     $1 --help | grep -o -e "--[^[:space:].,]*" | grep -e "$2" |sort -u
 }
 
@@ -1113,6 +1170,195 @@ _killall()
 
 complete -F _killall killall killps
 
+# Tmux Compression
+_tmux () {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    local -a return_trap=()
+    read -r -a _ _ return_trap < <(builtin trap -p return)
+
+    # Get rid of trailing signal name
+    return_trap=("${return_trap[@]:0:$(( ${#return_trap[@]} - 2 ))}")
+    trap "${return_trap[@]:-:}; unset -f _tmux::lscm _tmux::check_flags &>/dev/null; trap '${return_trap[@]:--}' return" return
+
+    local -a tmux_flags=(
+        -2
+        -C
+        -c:
+        -f:
+        -L:
+        -l
+        -S:
+        -u
+        -v
+        -V
+    )
+
+    _tmux::lscm () {
+        local wanted_cmd="$1"
+        shift
+
+        local cmd alias
+        local -a lscm_output=()
+        while read -ra lscm_output; do
+            set -- "${lscm_output[@]}"
+            # The full command name is the first field in each line of lscm
+            cmd="$1"
+            shift
+
+            # tmux aliases are surrounded with parentheses
+            if [[ "$1" == '('*')' ]]; then
+                alias="${1//[()]/}"
+                shift
+            fi
+
+            # If no command is sought, echo the command and its alias and
+            # return without processing the command's options
+            if [[ -z $wanted_cmd ]]; then
+                echo "$cmd" "$alias"
+                continue
+            # If a command was specified and it does not match the current
+            # command, skip to the next iteration
+            elif [[ "$wanted_cmd" != "$cmd" ]] \
+              && [[ "$wanted_cmd" != "$alias" ]]; then
+                continue
+            fi
+
+            # Now process any flags
+            local optv opt
+            while (( $# )); do
+                opt="$1"
+                # All options are surrounded with square brackets and begin
+                # with a single dash
+                if [[ "$opt" != '[-'* ]]; then
+                    shift
+                # If $opt doesn't end with a square bracket, it takes an
+                # argument
+                elif [[ "$opt" != *']' ]]; then
+                    # Trim the opening bracket and append a colon to indicate
+                    # that this option takes an argument
+                    optv+=("${opt#[}:")
+
+                    # Remove both the option and the argument from $@
+                    shift 2
+                else
+                    # Remove opening bracket and all dashes.  Safe because all
+                    # tmux options are single letters (i.e., no --long-options)
+                    opt="${opt#[}"
+                    opt="${opt//-/}"
+
+                    # Some options are pipe-delimited
+                    opt="${opt//|/}"
+
+                    # Process each character separately
+                    local flag
+                    while read -r -n 1 flag; do
+                        [[ -z "$flag" ]] && continue
+                        optv+=("-$flag")
+                    done <<<"${opt%]}"
+
+                    shift
+                fi
+            done
+
+            echo "${optv[@]}"
+            break
+        done < <(command tmux lscm)
+
+        unset -f "${FUNCNAME[0]}"
+
+        return 0
+    }
+
+    # If a flag ends with ':', the user must provide an argument.  Signal that
+    # no completion should occur by returning 1.
+    _tmux::check_flags () {
+        local prev="$1"
+        shift
+
+        if [[ "$prev" == -* ]]; then
+            local flag trimmed
+            for flag in "$@"; do
+                trimmed="${flag%:}"
+                if [[ "$prev" == "$trimmed" ]] && (( ${#trimmed} < ${#flag} )); then
+                    return 1
+                fi
+            done
+        fi
+
+        unset -f "${FUNCNAME[0]}"
+
+        return 0
+    }
+
+    # Scan existing argument list for non-flag options
+    if (( COMP_CWORD > 0 )); then
+        local cmd=''
+        local -i comp_iword=1
+        local maybe_cmd="${COMP_WORDS[comp_iword]}"
+
+        while (( comp_iword < COMP_CWORD )); do
+            if [[ "$maybe_cmd" != -* ]]; then
+                cmd="$maybe_cmd"
+                break
+            fi
+            ((comp_iword++))
+            maybe_cmd="${COMP_WORDS[comp_iword]}"
+        done
+    fi
+
+    # If we haven't seen a command yet, provide completion based only on
+    # commands and flags to tmux itself.
+    if [[ -z "$cmd" ]]; then
+        if ! _tmux::check_flags "$prev" "${tmux_flags[@]}"; then
+            return 1
+        fi
+
+        COMPREPLY=($(compgen -W "$(_tmux::lscm) ${tmux_flags[*]//:/}" -- "${cur}"))
+    else
+        local -a optv
+        optv=($(_tmux::lscm "$cmd"))
+
+        if ! _tmux::check_flags "$prev" "${optv[@]}"; then
+            return 1
+        fi
+
+        COMPREPLY=($(compgen -W "${optv[*]//:/}" -- "${cur}"))
+    fi
+
+    return 0
+}
+
+complete -F _tmux tmux
+
+
+
+# Tmuxinator completions
+_tmuxinator() {
+    COMPREPLY=()
+    local word
+    word="${COMP_WORDS[COMP_CWORD]}"
+
+    if [ "$COMP_CWORD" -eq 1 ]; then
+        local commands="$(compgen -W "$(tmuxinator commands)" -- "$word")"
+        local projects="$(compgen -W "$(tmuxinator completions start)" -- "$word")"
+
+        COMPREPLY=( $commands $projects )
+    elif [ "$COMP_CWORD" -eq 2 ]; then
+        local words
+        words=("${COMP_WORDS[@]}")
+        unset words[0]
+        unset words[$COMP_CWORD]
+        local completions
+        completions=$(tmuxinator completions "${words[@]}")
+        COMPREPLY=( $(compgen -W "$completions" -- "$word") )
+    fi
+}
+
+complete -F _tmuxinator tmuxinator mux
+alias mux="tmuxinator"
+
 #powerline-daemon -q
 #POWERLINE_BASH_CONTINUATION=1
 #POWERLINE_BASH_SELECT=1
@@ -1123,36 +1369,46 @@ complete -F _killall killall killps
 # sh-shell:bash
 # End:
 #
-## Path to the bash it configuration
-#export BASH_IT="/home/Jack/.bash_it"
-#
-## Lock and Load a custom theme file
-## location /.bash_it/themes/
+# Path to the bash it configuration
+#export BASH_IT="/etc/BashRC/.bash_it"
+
+# Lock and Load a custom theme file
+# location /.bash_it/themes/
+# Favorits theme
 #export BASH_IT_THEME='powerline'
-#
-## Your place for hosting Git repos. I use this for private repos.
+#export BASH_IT_THEME='atomic'
+#export BASH_IT_THEME='metal'
+#export BASH_IT_THEME='bobby-python'
+#export BASH_IT_THEME='cupcake'
+#export BASH_IT_THEME='hawaii50'
+#export BASH_IT_THEME='n0qorg'
+#export BASH_IT_THEME='parrot'
+#export BASH_IT_THEME='redline'
+
+
+# Your place for hosting Git repos. I use this for private repos.
 #export GIT_HOSTING='git@git.domain.com'
-#
-## Don't check mail when opening terminal.
+
+# Don't check mail when opening terminal.
 #unset MAILCHECK
-#
+
 ## Change this to your console based IRC client of choice.
 #export IRC_CLIENT='irssi'
-#
+
 ## Set this to the command you use for todo.txt-cli
 #export TODO="t"
-#
+
 ## Set this to false to turn off version control status checking within the prompt for all themes
 #export SCM_CHECK=true
-#
+
 ## Set vcprompt executable path for scm advance info in prompt (demula theme)
 ## https://github.com/xvzf/vcprompt
-##export VCPROMPT_EXECUTABLE=~/.vcprompt/bin/vcprompt
-#
+#export VCPROMPT_EXECUTABLE=~/.vcprompt/bin/vcprompt
+
 ## Load Bash It
 #source $BASH_IT/bash_it.sh
 #
-#export NVM_DIR="/home/Jack/.nvm"
+#export NVM_DIR="/home/$HOME/.nvm"
 #[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 #
 ## PowerLine configure
