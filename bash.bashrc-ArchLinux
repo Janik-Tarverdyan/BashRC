@@ -62,6 +62,13 @@ shopt -s checkwinsize
 # match all files and zero or more directories and subdirectories.
 #shopt -s globstar
 
+[ -z "$NVM_DIR" ] && export NVM_DIR="$HOME/.nvm"
+source /usr/share/nvm/nvm.sh
+source /usr/share/nvm/bash_completion
+source /usr/share/nvm/install-nvm-exec
+
+
+
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
@@ -186,6 +193,7 @@ alias clone-site='wget --mirror --convert-links --adjust-extension --page-requis
 # MySQL Service
 #alias mysql='mycli'
 alias 'mysql-start'='mysql -hlocalhost -uroot -p'
+alias 'mysql-start-completion'='mycli -hlocalhost -uroot --password j5a264klxhr'
 
 # Python
 #alias python='bpython'
