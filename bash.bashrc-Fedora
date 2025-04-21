@@ -108,6 +108,7 @@ xterm*|rxvt*)
 esac
 
 # enable color support of ls and also add handy aliases
+[ -f ~/.aliases ] && source ~/.aliases
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors & eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     #alias dir='dir --color=auto'
@@ -1225,9 +1226,14 @@ complete -F _killall killall killps
 #fi
 
 function _update_ps1() {
-    PS1="$( /etc/.powerline-shell/powerline-shell.py $? 2> /dev/null) \n↦ "
+    PS1="$( ~/.powerline-shell/powerline-shell.py $? 2> /dev/null) \n↦ "
 }
 
 if [ "$TERM" != "linux" ]; then
     PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+source '/home/it-master/.bash_completions/fastapi.sh'
+
